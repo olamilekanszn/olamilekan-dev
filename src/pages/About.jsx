@@ -2,7 +2,7 @@ import { FaLaptopCode, FaUsers, FaLightbulb } from "react-icons/fa";
 
 function About() {
   return (
-    <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-gray-50/70 text-center min-h-screen snap-start">
+    <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-white text-center min-h-screen snap-start">
       <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-6 sm:mb-8">About Me</h1>
 
       <div className="max-w-4xl mx-auto text-gray-700 text-base sm:text-lg space-y-4 sm:space-y-6 text-left px-2">

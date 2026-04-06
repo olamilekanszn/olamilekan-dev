@@ -98,7 +98,7 @@ function Contact() {
   };
 
   return (
-    <section className="min-h-screen bg-gray-50/70 py-12 sm:py-16 md:py-20 px-4 sm:px-6 flex items-center justify-center snap-start">
+    <section className="min-h-screen bg-white py-12 sm:py-16 md:py-20 px-4 sm:px-6 flex items-center justify-center snap-start">
       <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
         <div className="text-center md:text-left order-2 md:order-1">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-4 sm:mb-6">

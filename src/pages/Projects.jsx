@@ -45,7 +45,7 @@ const projects = [
 
 export default function Projects() {
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-gray-50 to-gray-100/70 min-h-screen snap-start">
+    <section className="py-12 sm:py-16 md:py-20 bg-white min-h-screen snap-start">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-blue-900 mb-8 sm:mb-12 md:mb-16">
           My Projects

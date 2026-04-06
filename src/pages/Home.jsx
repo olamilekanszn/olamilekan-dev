@@ -53,11 +53,11 @@ function Home() {
           </div>
         </div>
 
-        <div className="w-48 sm:w-64 md:w-80 lg:w-[360px] h-48 sm:h-64 md:h-80 lg:h-[360px] rounded-full overflow-hidden shadow-lg border-4 border-blue-900 mb-4 md:mb-0">
+        <div className="w-48 sm:w-64 md:w-64 lg:w-80 h-48 sm:h-64 md:h-64 lg:h-80 rounded-full overflow-hidden shadow-lg border-4 border-blue-900 mb-4 md:mb-0">
           <img
             src="/szn.jpg"
             alt="Egbeyemi Olamilekan"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-full"
           />
         </div>
       </div>
