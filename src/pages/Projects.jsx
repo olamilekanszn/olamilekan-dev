@@ -32,7 +32,7 @@ const projects = [
     description: "A modern portfolio website showcasing my work.",
     image: "/myportfolio.png",
     tech: ["React", "Tailwind"],
-    link: "https://egbeyemi-portfolio.vercel.app/",
+    link: "https://olamilekan-dev-eta.vercel.app/",
   },
   {
     title: "BlackJack Game",
