@@ -34,7 +34,7 @@ function TypewriterHeadline() {
 
   const cursor = (
     <span className="inline-block w-0 overflow-visible animate-pulse text-blue-900">
-      |
+      .
     </span>
   );
 

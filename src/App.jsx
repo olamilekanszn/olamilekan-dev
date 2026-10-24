@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Landing from './pages/Landing';
 import About from './pages/About';
@@ -6,6 +6,7 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Loader from './components/Loader';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -18,8 +19,12 @@ function ScrollToTop() {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
+      {loading && <Loader onComplete={() => setLoading(false)} />}
+
       <ScrollToTop />
       <Navbar />
 
