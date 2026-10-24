@@ -1,5 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Landing from './pages/Landing';
 import About from './pages/About';
 import Projects from './pages/Projects';
@@ -7,12 +7,23 @@ import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
+      <ScrollToTop />
       <Navbar />
-      
-      <main className="pt-16">
+
+      <main>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/about" element={<About />} />

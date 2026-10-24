@@ -1,239 +1,107 @@
-import { FaLinkedin, FaTwitter, FaGithubSquare } from "react-icons/fa";
-import { useState, useEffect } from "react";
-import emailjs from "@emailjs/browser";
-import { emailjsConfig } from "../config/emailjs";
+import { FiStar } from "react-icons/fi";
+import { motion as Motion } from "framer-motion";
 
-function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState("");
-  const [errors, setErrors] = useState({});
+const testimonials = [
+  {
+    name: "Sarah Jenkins",
+    role: "CEO at KoraTech",
+    quote: "Working with them was incredible. The level of detail and aesthetic perfection brought to our web platform fundamentally changed our conversion rates.",
+    rating: 5,
+    avatar: "https://i.pravatar.cc/150?u=1",
+  },
+  {
+    name: "Marcus Thorne",
+    role: "Founder, Thorne Design",
+    quote: "A rare mix of brilliant engineering and breathtaking design. They didn't just build a site, they architected a premium digital experience for our brand.",
+    rating: 5,
+    avatar: "https://i.pravatar.cc/150?u=2",
+  },
+  {
+    name: "Elena Rodriguez",
+    role: "Marketing Director",
+    quote: "Fast, communicative, and terrifyingly skilled. The cinematic animations and glassmorphism elements they implemented left our entire executive team speechless.",
+    rating: 5,
+    avatar: "https://i.pravatar.cc/150?u=3",
+  },
+  {
+    name: "David Chen",
+    role: "CTO, Lumina Innovations",
+    quote: "The cleanest code architecture paired with the most aggressive, cutting-edge UI I've seen. Delivering agency-level quality on strict timelines.",
+    rating: 5,
+    avatar: "https://i.pravatar.cc/150?u=4",
+  },
+  {
+    name: "Chloe Michaels",
+    role: "Creative Director",
+    quote: "I've worked with dozens of developers, but few possess the visual instinct seen here. The motion design perfectly executed our creative vision.",
+    rating: 5,
+    avatar: "https://i.pravatar.cc/150?u=5",
+  },
+  {
+    name: "Jordan Ade",
+    role: "Product Lead, Nimbus Finance",
+    quote: "Handed over a rough brief and got back something sharper than we imagined. Communication was tight and every revision landed exactly on target.",
+    rating: 5,
+    avatar: "https://i.pravatar.cc/150?u=6",
+  },
+];
 
-  // Initialize EmailJS once when component mounts
-  useEffect(() => {
-    if (emailjsConfig.publicKey) {
-      emailjs.init(emailjsConfig.publicKey);
-    }
-  }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setIsSubmitting(true);
-    setSubmitStatus("");
-
-    try {
-      // Debugging - remove or comment out in production
-      console.log("EmailJS Config:", {
-        serviceId: emailjsConfig.serviceId,
-        templateId: emailjsConfig.templateId,
-        publicKey: emailjsConfig.publicKey ? "Present" : "Missing",
-        toEmail: emailjsConfig.toEmail,
-      });
-
-      const result = await emailjs.send(
-        emailjsConfig.serviceId,
-        emailjsConfig.templateId,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-          to_email: emailjsConfig.toEmail,
-        }
-      );
-
-      console.log("Email sent successfully:", result.text);
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      console.error("Error sending email:", error);
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
+export default function Contact() {
   return (
-    <section className="min-h-screen bg-white py-12 sm:py-16 md:py-20 px-4 sm:px-6 flex items-center justify-center snap-start">
-      <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
-        <div className="text-center md:text-left order-2 md:order-1">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-blue-900 mb-4 sm:mb-6">
-            Let's Work Together
+    <section className="w-full pt-32 pb-20 md:pb-28 bg-white dark:bg-black transition-colors duration-500">
+      <div className="max-w-300 mx-auto px-6 lg:px-12">
+        {/* Header */}
+        <div className="flex flex-col items-center text-center space-y-4 mb-16">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-marags font-black text-black dark:text-white tracking-tighter uppercase leading-none">
+            CLIENT <span className="text-blue-900 dark:text-blue-900">REVIEWS</span>
           </h2>
-          <p className="text-gray-700 text-base sm:text-lg mb-6 sm:mb-8">
-            I&apos;m currently open to{" "}
-            <strong className="text-blue-900">freelance opportunities</strong>,
-            remote jobs, collaborations, or just connecting with fellow
-            developers and creatives. If you have an idea or project you&apos;d
-            like to discuss feel free to reach out!
-          </p>
-
-          <div className="flex justify-center md:justify-start space-x-6 text-2xl sm:text-3xl text-blue-600 mb-6 sm:mb-8">
-            <a
-              href="https://linkedin.com/in/olamilekan-egbeyemi"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-blue-900 transition"
-              title="LinkedIn"
-            >
-              <FaLinkedin />
-            </a>
-            <a
-              href="https://x.com/ridwanullahiszn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-sky-400 transform hover:scale-110 transition duration-300"
-            >
-              <FaTwitter />
-            </a>
-            <a
-              href="https://github.com/olamilekanszn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-gray-800 transition"
-              title="GitHub"
-            >
-              <FaGithubSquare />
-            </a>
-          </div>
-
-          <p className="text-gray-600 text-sm sm:text-base">
-            Or send me a message via email directly.
+          <div className="w-12 h-0.75 bg-blue-800/50" />
+          <p className="text-gray-600 dark:text-gray-400 max-w-xl text-sm md:text-base mt-4">
+            Don&apos;t just take my word for it. Here&apos;s what founders, directors, and technical leaders have to say.
           </p>
         </div>
 
-        <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 order-1 md:order-2">
-          <h3 className="text-lg sm:text-xl font-semibold text-blue-900 mb-4 sm:mb-6">
-            Send a Message
-          </h3>
-
-          {submitStatus === "success" && (
-            <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-md text-sm">
-              Message sent successfully! I'll get back to you soon.
-            </div>
-          )}
-
-          {submitStatus === "error" && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm">
-              Failed to send message. Please try again or email me directly.
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-            <div>
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                value={formData.name}
-                onChange={handleChange}
-                className={`w-full border rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 text-sm sm:text-base ${
-                  errors.name
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:ring-blue-500"
-                }`}
-              />
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-              )}
-            </div>
-
-            <div>
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`w-full border rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 text-sm sm:text-base ${
-                  errors.email
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:ring-blue-500"
-                }`}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-              )}
-            </div>
-
-            <div>
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                value={formData.message}
-                onChange={handleChange}
-                rows="4"
-                className={`w-full border rounded-md px-3 sm:px-4 py-2 sm:py-3 focus:outline-none focus:ring-2 text-sm sm:text-base resize-none ${
-                  errors.message
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:ring-blue-500"
-                }`}
-              ></textarea>
-              {errors.message && (
-                <p className="text-red-500 text-xs mt-1">{errors.message}</p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full font-semibold py-2 sm:py-3 rounded-md transition text-sm sm:text-base ${
-                isSubmitting
-                  ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                  : "bg-blue-800 text-white hover:bg-blue-900"
-              }`}
+        {/* Simple grid, no drag/marquee */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {testimonials.map((testimonial, idx) => (
+            <Motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              className="flex flex-col justify-between bg-gray-50 dark:bg-[#0A0A0A] border border-black/10 dark:border-white/10 rounded-2xl p-6 md:p-8 hover:border-blue-800/30 transition-colors duration-300"
             >
-              {isSubmitting ? "Sending..." : "Send Message"}
-            </button>
-          </form>
+              <div>
+                <div className="flex gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <FiStar key={i} className="text-blue-900 fill-blue-900 w-4 h-4" />
+                  ))}
+                </div>
+                <p className="text-sm md:text-base text-black dark:text-white leading-relaxed">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 mt-6 pt-6 border-t border-black/5 dark:border-white/5">
+                <img
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  className="w-10 h-10 rounded-full object-cover border border-black/10 dark:border-white/10"
+                />
+                <div className="flex flex-col">
+                  <span className="font-bold text-sm text-black dark:text-white">
+                    {testimonial.name}
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                    {testimonial.role}
+                  </span>
+                </div>
+              </div>
+            </Motion.div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
-
-export default Contact;

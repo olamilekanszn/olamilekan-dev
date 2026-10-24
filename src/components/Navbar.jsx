@@ -1,121 +1,168 @@
-import { Link, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { FiPhone, FiMail, FiHome } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
+
+const navItems = [
+  { label: <FiHome className="w-3.5 h-3.5 sm:w-4 sm:h-4" />, path: "/", name: "Home" },
+  { label: "About", path: "/about", name: "About" },
+  { label: "Projects", path: "/projects", name: "Projects" },
+];
+
+const contactLinks = [
+  {
+    href: "https://wa.me/2349029805219",
+    external: true,
+    title: "WhatsApp",
+    sub: "Chat with me",
+    icon: <FaWhatsapp className="w-4 h-4" />,
+    color: "bg-green-500/10 text-green-500 group-hover:bg-green-500 group-hover:text-white",
+  },
+  {
+    href: "tel:+2349029805219",
+    title: "Phone",
+    sub: "Call directly",
+    icon: <FiPhone className="w-4 h-4" />,
+    color: "bg-blue-500/10 text-blue-900 group-hover:bg-blue-500 group-hover:text-white",
+  },
+  {
+    href: "mailto:egbeyemiolamilekan3008@gmail.com",
+    title: "Email",
+    sub: "Send a message",
+    icon: <FiMail className="w-4 h-4" />,
+    color: "bg-blue-800/10 text-blue-900 group-hover:bg-blue-800 group-hover:text-white",
+  },
+];
 
 function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const location = useLocation();
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const contactRef = useRef(null);
+  const { pathname } = useLocation();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
+  // Close dropdown on outside click or Escape
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    const handleClickOutside = (e) => {
+      if (contactRef.current && !contactRef.current.contains(e.target)) {
+        setIsContactOpen(false);
+      }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleKey = (e) => e.key === "Escape" && setIsContactOpen(false);
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKey);
+    };
   }, []);
 
-  const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/projects', label: 'Projects' },
-    { path: '/contact', label: 'Contact' },
-  ];
-
-  const isActive = (path) => {
-    if (path === '/') {
-      return location.pathname === '/' || location.pathname === '';
-    }
-    return location.pathname === path;
+  const handleNavClick = (path) => {
+    setIsContactOpen(false);
+    // Clicking the page you're already on scrolls back to the top
+    if (path === pathname) window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200'
-          : 'bg-white/90 backdrop-blur-sm shadow-md'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link
-              to="/"
-              className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-900 to-blue-700 bg-clip-text text-transparent hover:from-blue-700 hover:to-blue-900 transition-all duration-300"
-            >
-              O.SZN
-            </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
+    <div className="fixed top-4 sm:top-6 left-0 right-0 z-100 flex justify-center px-2 pointer-events-none">
+      {/* Pill container */}
+      <nav className="pointer-events-auto px-1.5 sm:px-3 py-1.5 sm:py-2 bg-white/80 backdrop-blur-xl border border-black/10 rounded-full inline-flex justify-center items-center gap-0.5 sm:gap-2 shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-500 hover:bg-white hover:border-black/20">
+        {/* Nav links */}
+        <div className="flex items-center gap-0.5 sm:gap-1.5">
+          {navItems.map((item) => {
+            const isActive = pathname === item.path;
+            return (
               <Link
-                key={link.path}
-                to={link.path}
-                className={`relative px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 ${
-                  isActive(link.path)
-                    ? 'text-blue-900 bg-blue-50'
-                    : 'text-gray-700 hover:text-blue-900 hover:bg-gray-50'
+                key={item.path}
+                to={item.path}
+                onClick={() => handleNavClick(item.path)}
+                aria-label={item.name}
+                aria-current={isActive ? "page" : undefined}
+                className={`px-2 sm:px-4 py-1.5 sm:py-2 rounded-full flex justify-center items-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  isActive
+                    ? "bg-blue-800/90 shadow-[0_0_20px_rgba(30,64,175,0.3)]"
+                    : "hover:bg-black/5"
                 }`}
               >
-                {link.label}
-                {isActive(link.path) && (
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-900 rounded-full"></span>
-                )}
+                <span
+                  className={`text-[8px] sm:text-xs tracking-[0.2em] uppercase flex items-center justify-center transition-colors duration-500 ${
+                    isActive ? "text-white font-black" : "text-gray-600 font-bold"
+                  }`}
+                >
+                  {item.label}
+                </span>
               </Link>
-            ))}
-          </div>
+            );
+          })}
+        </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
-              aria-label="Toggle menu"
+        {/* Divider */}
+        <div className="w-px h-4 sm:h-5 bg-black/10 mx-1 sm:mx-3 rounded-full" />
+
+        {/* Let's Talk */}
+        <div className="relative flex items-center gap-2" ref={contactRef}>
+          <button
+            type="button"
+            onClick={() => setIsContactOpen((open) => !open)}
+            aria-expanded={isContactOpen}
+            className={`relative overflow-hidden group border rounded-full px-3 sm:px-5 py-1.5 sm:py-2 flex justify-center items-center transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              isContactOpen
+                ? "border-blue-800 bg-blue-800 shadow-[0_0_25px_rgba(30,64,175,0.5)]"
+                : "border-black/10 hover:border-blue-800/50"
+            }`}
+          >
+            <span
+              className={`absolute inset-0 w-full h-full bg-blue-800 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] z-0 ${
+                isContactOpen
+                  ? "translate-x-0"
+                  : "-translate-x-[105%] group-hover:translate-x-0"
+              }`}
+            />
+            <span
+              className={`relative z-10 text-[8px] sm:text-xs font-black tracking-[0.2em] uppercase transition-colors duration-500 ${
+                isContactOpen ? "text-white" : "text-black group-hover:text-white"
+              }`}
             >
-              {isMenuOpen ? (
-                <FaTimes size={24} className="text-gray-800" />
-              ) : (
-                <FaBars size={24} className="text-gray-800" />
-              )}
-            </button>
-          </div>
-        </div>
+              Let&rsquo;s Talk
+            </span>
+          </button>
 
-        {/* Mobile Navigation */}
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-          }`}
-        >
-          <div className="px-2 pt-2 pb-4 space-y-2 border-t border-gray-200 mt-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200 ${
-                  isActive(link.path)
-                    ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-900'
-                    : 'text-gray-700 hover:text-blue-900 hover:bg-gray-50'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+          {/* Dropdown */}
+          <div
+            className={`absolute top-full right-0 mt-4 w-60 sm:w-64 bg-white/95 backdrop-blur-3xl border border-black/10 rounded-2xl p-2 shadow-2xl transition-all duration-300 origin-top-right ${
+              isContactOpen
+                ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
+                : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
+            }`}
+          >
+            <div className="flex flex-col space-y-1">
+              {contactLinks.map((item) => (
+                <a
+                  key={item.title}
+                  href={item.href}
+                  {...(item.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-black/5 transition-colors group"
+                >
+                  <div
+                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${item.color}`}
+                  >
+                    {item.icon}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-black text-sm font-bold">{item.title}</span>
+                    <span className="text-gray-500 text-[10px] uppercase tracking-wider">
+                      {item.sub}
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
 
 export default Navbar;
-

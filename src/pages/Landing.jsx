@@ -5,12 +5,12 @@ import Contact from './Contact';
 
 function Landing() {
   return (
-    <div className="h-screen overflow-y-scroll scroll-smooth">
+    <>
       <Home />
       <About />
       <Projects />
       <Contact />
-    </div>
+    </>
   );
 }
 
